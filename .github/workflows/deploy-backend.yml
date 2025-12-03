@@ -19,7 +19,9 @@ jobs:
     - name: Add SSH key
       uses: webfactory/ssh-agent@v0.7.0
       with:
-        ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+        ssh-private-key: | 
+          ${{ secrets.EC2_SSH_KEY }}
+          
 
     - name: Ensure Node + PM2 installed on EC2
       run: |

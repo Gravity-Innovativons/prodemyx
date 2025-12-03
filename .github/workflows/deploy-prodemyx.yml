@@ -41,7 +41,8 @@ jobs:
     - name: Add SSH key
       uses: webfactory/ssh-agent@v0.7.0
       with:
-        ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+        ssh-private-key: |
+          ${{ secrets.EC2_SSH_KEY }}
 
     - name: Create website directory on EC2
       run: |
