@@ -84,44 +84,40 @@ jobs:
         PRODEMYX_PATH: ${{ secrets.EC2_PRODEMYX_PATH }}
         FRONTEND_PATH: ${{ secrets.EC2_FRONTEND_PATH }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-          # Pass environment variables to the remote shell
-          PRODEMYX_PATH='${PRODEMYX_PATH}' \
-          FRONTEND_PATH='${FRONTEND_PATH}' \
-          bash -s" <<'EOF'
-          # Using a heredoc to write the Nginx config.
-          # The remote shell will now expand the variables passed to it.
-          sudo tee /etc/nginx/sites-available/prodemyx-config > /dev/null <<EOC
+        # Use a heredoc without quotes (<<EOF) to allow the GitHub Actions runner to expand variables.
+        # All '$' characters intended for the remote server (like Nginx variables) must be escaped (e.g., \\\$uri).
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<EOF
+          sudo tee /etc/nginx/sites-available/prodemyx-config > /dev/null <<'EOC'
           upstream backend_app {
               server 127.0.0.1:3000;
           }
         
           server {
               listen 80;
-              server_name _;
+              server_name _; # Using a wildcard server_name
         
               # 1. PROXY API REQUESTS TO BACKEND (Port 3000)
               location /api/ {
-                  rewrite ^/api/(.*)$ /\$1 break; # Nginx vars must be escaped for the shell
+                  rewrite ^/api/(.*)$ /\\\$1 break;
                   proxy_pass http://backend_app;
                   proxy_http_version 1.1;
-                  proxy_set_header Upgrade \$http_upgrade;
+                  proxy_set_header Upgrade \\\$http_upgrade;
                   proxy_set_header Connection 'upgrade';
-                  proxy_set_header Host \$host;
-                  proxy_cache_bypass \$http_upgrade;
+                  proxy_set_header Host \\\$host;
+                  proxy_cache_bypass \\\$http_upgrade;
               }
         
               # 2. SERVE MAIN WEBSITE (Prodemyx)
               location / {
-                  root \${PRODEMYX_PATH}; # Shell variables are expanded here
+                  root ${{ secrets.EC2_PRODEMYX_PATH }};
                   index index.html index.htm;
-                  try_files \$uri \$uri/ /index.html;
+                  try_files \\\$uri \\\$uri/ /index.html;
               }
         
               # 3. SERVE SECONDARY FRONTEND APPLICATION
               location /app/ {
-                  alias \${FRONTEND_PATH}/;
-                  try_files \$uri \$uri/ /app/index.html;
+                  alias ${{ secrets.EC2_FRONTEND_PATH }}/;
+                  try_files \\\$uri \\\$uri/ /app/index.html;
               }
           }
 EOC
