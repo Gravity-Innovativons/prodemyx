@@ -79,62 +79,60 @@ jobs:
               echo 'Nginx already installed'; \
            fi"
            
-    - name: Deploy Nginx Configuration
-      env:
-        PRODEMYX_PATH: ${{ secrets.EC2_PRODEMYX_PATH }}
-        FRONTEND_PATH: ${{ secrets.EC2_FRONTEND_PATH }}
+    - name: Create Nginx Config Locally
       run: |
-        # Use a heredoc without quotes (<<EOF) to allow the GitHub Actions runner to expand variables.
-        # All '$' characters intended for the remote server (like Nginx variables) must be escaped (e.g., \\\$uri).
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<EOF
-          sudo tee /etc/nginx/sites-available/prodemyx-config > /dev/null <<'EOC'
+        # Create the config file locally on the runner. This is much more reliable.
+        # Note that Nginx variables like $uri do not need to be escaped here.
+        cat > prodemyx-config <<EOF
           upstream backend_app {
               server 127.0.0.1:3000;
           }
         
           server {
               listen 80;
-              server_name _; # Using a wildcard server_name
+              server_name _;
         
               # 1. PROXY API REQUESTS TO BACKEND (Port 3000)
               location /api/ {
-                  rewrite ^/api/(.*)$ /\\\$1 break;
+                  rewrite ^/api/(.*)$ /\$1 break;
                   proxy_pass http://backend_app;
                   proxy_http_version 1.1;
-                  proxy_set_header Upgrade \\\$http_upgrade;
+                  proxy_set_header Upgrade \$http_upgrade;
                   proxy_set_header Connection 'upgrade';
-                  proxy_set_header Host \\\$host;
-                  proxy_cache_bypass \\\$http_upgrade;
+                  proxy_set_header Host \$host;
+                  proxy_cache_bypass \$http_upgrade;
               }
         
               # 2. SERVE MAIN WEBSITE (Prodemyx)
               location / {
                   root ${{ secrets.EC2_PRODEMYX_PATH }};
                   index index.html index.htm;
-                  try_files \\\$uri \\\$uri/ /index.html;
+                  try_files \$uri \$uri/ /index.html;
               }
         
               # 3. SERVE SECONDARY FRONTEND APPLICATION
               location /app/ {
                   alias ${{ secrets.EC2_FRONTEND_PATH }}/;
-                  try_files \\\$uri \\\$uri/ /app/index.html;
+                  try_files \$uri \$uri/ /app/index.html;
               }
           }
 EOC
-        
-          # Create symbolic link and remove default config if they exist
-          if [ ! -L /etc/nginx/sites-enabled/prodemyx-config ]; then
-            sudo ln -s /etc/nginx/sites-available/prodemyx-config /etc/nginx/sites-enabled/
-          fi
-          if [ -L /etc/nginx/sites-enabled/default ]; then
-            sudo rm /etc/nginx/sites-enabled/default
-          fi
-EOF
+
+    - name: Deploy Nginx Configuration
+      run: |
+        # Copy the locally created config file to the user's home directory on EC2
+        rsync -e 'ssh -o StrictHostKeyChecking=no' prodemyx-config ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/
 
     - name: Reload Nginx
       run: |
         ssh -o StrictHostKeyChecking=no \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-          "sudo /usr/sbin/nginx -t && sudo systemctl reload nginx && echo 'Dashboard deployment successful!'"
+          "set -e; \
+           sudo mv ~/prodemyx-config /etc/nginx/sites-available/prodemyx-config; \
+           sudo ln -sf /etc/nginx/sites-available/prodemyx-config /etc/nginx/sites-enabled/prodemyx-config; \
+           sudo rm -f /etc/nginx/sites-enabled/default; \
+           sudo nginx -t; \
+           sudo systemctl reload nginx; \
+           echo 'Dashboard deployment successful!'"
 
           
