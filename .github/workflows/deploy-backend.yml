@@ -94,4 +94,3 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
           "pm2 list | grep prodemyx-backend || exit 1; echo 'Backend is running.'"
-          
