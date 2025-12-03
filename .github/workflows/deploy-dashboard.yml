@@ -84,59 +84,52 @@ jobs:
         PRODEMYX_PATH: ${{ secrets.EC2_PRODEMYX_PATH }}
         FRONTEND_PATH: ${{ secrets.EC2_FRONTEND_PATH }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "bash -s" <<'EOF'
-        
-        # Define the configuration content using a variable to simplify quoting
-        CONFIG_CONTENT="
-        upstream backend_app {
-            server 127.0.0.1:3000;
-        }
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "bash -s" <<EOF
+          # Using a heredoc to write the Nginx config.
+          # This allows shell variables (like \$PRODEMYX_PATH) to be expanded,
+          # while Nginx variables (like \$host) are escaped with a backslash.
+          sudo tee /etc/nginx/sites-available/prodemyx-config > /dev/null <<'EOC'
+          upstream backend_app {
+              server 127.0.0.1:3000;
+          }
 
-        server {
-            listen 80;
-            server_name _;
+          server {
+              listen 80;
+              server_name _;
 
-            # 1. PROXY API REQUESTS TO BACKEND (Port 3000)
-            location /api/ {
-                rewrite ^/api/(.*)$ /$1 break;
-                proxy_pass http://backend_app;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade \$http_upgrade;
-                proxy_set_header Connection 'upgrade';
-                proxy_set_header Host \$host;
-                proxy_cache_bypass \$http_upgrade;
-            }
+              # 1. PROXY API REQUESTS TO BACKEND (Port 3000)
+              location /api/ {
+                  rewrite ^/api/(.*)$ /\$1 break;
+                  proxy_pass http://backend_app;
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade \\\$http_upgrade;
+                  proxy_set_header Connection 'upgrade';
+                  proxy_set_header Host \\\$host;
+                  proxy_cache_bypass \\\$http_upgrade;
+              }
 
-            # 2. SERVE MAIN WEBSITE (Prodemyx)
-            location / {
-                root $PRODEMYX_PATH;
-                index index.html index.htm;
-                try_files \$uri \$uri/ /index.html;
-            }
-            
-            # 3. SERVE SECONDARY FRONTEND APPLICATION
-            location /app/ {
-                alias $FRONTEND_PATH/;
-                try_files \$uri \$uri/ @frontend_rewrite;
-            }
-            
-            location @frontend_rewrite {
-                rewrite ^/app/(.*)$ /app/index.html break;
-            }
-        }
-        "
-        
-        # Write the configuration file
-        echo "\$CONFIG_CONTENT" | sudo tee /etc/nginx/sites-available/prodemyx-config
-        
-        # Create symbolic link and remove default config if they exist
-        if [ ! -L /etc/nginx/sites-enabled/prodemyx-config ]; then
-          sudo ln -s /etc/nginx/sites-available/prodemyx-config /etc/nginx/sites-enabled/
-        fi
-        if [ -L /etc/nginx/sites-enabled/default ]; then
-          sudo rm /etc/nginx/sites-enabled/default
-        fi
-        
+              # 2. SERVE MAIN WEBSITE (Prodemyx)
+              location / {
+                  root ${PRODEMYX_PATH};
+                  index index.html index.htm;
+                  try_files \\\$uri \\\$uri/ /index.html;
+              }
+
+              # 3. SERVE SECONDARY FRONTEND APPLICATION
+              location /app/ {
+                  alias ${FRONTEND_PATH}/;
+                  try_files \\\$uri \\\$uri/ /app/index.html;
+              }
+          }
+EOC
+
+          # Create symbolic link and remove default config if they exist
+          if [ ! -L /etc/nginx/sites-enabled/prodemyx-config ]; then
+            sudo ln -s /etc/nginx/sites-available/prodemyx-config /etc/nginx/sites-enabled/
+          fi
+          if [ -L /etc/nginx/sites-enabled/default ]; then
+            sudo rm /etc/nginx/sites-enabled/default
+          fi
         EOF
 
     - name: Reload Nginx
