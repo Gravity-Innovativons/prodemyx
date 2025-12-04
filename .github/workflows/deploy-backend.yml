@@ -245,15 +245,10 @@ jobs:
                 proxy_cache_bypass \$http_upgrade;
             }
             
-            location /app {
-                alias $FRONTEND_PATH;
+            location /app/ {
+                alias $FRONTEND_PATH/;
                 try_files \$uri \$uri/ /app/index.html;
                 index index.html;
-                
-                location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-                    expires 1y;
-                    add_header Cache-Control "public, immutable";
-                }
             }
             
             location /phpmyadmin {
@@ -277,11 +272,6 @@ jobs:
                 root $PRODEMYX_PATH;
                 try_files \$uri \$uri/ /index.html;
                 index index.html;
-                
-                location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-                    expires 1y;
-                    add_header Cache-Control "public, immutable";
-                }
             }
             
             location ~ /\. {
@@ -347,4 +337,3 @@ jobs:
         echo "  - Swagger Docs: Available at /api-docs"
         echo "========================================="
         EOF
-        
