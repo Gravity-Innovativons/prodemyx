@@ -194,10 +194,15 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "chmod 600 ${{ secrets.EC2_BACKEND_PATH }}/.env"
 
     - name: Configure Nginx with all routes
+      env:
+        FRONTEND_PATH: ${{ secrets.EC2_FRONTEND_PATH }}
+        PRODEMYX_PATH: ${{ secrets.EC2_PRODEMYX_PATH }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'bash -s' << 'EOF'
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -s "$FRONTEND_PATH" "$PRODEMYX_PATH" << 'EOF'
+        FRONTEND_PATH=$1
+        PRODEMYX_PATH=$2
         echo "Configuring Nginx with all routes..."
-        sudo tee /etc/nginx/sites-available/prodemyx-config > /dev/null << 'NGINXEOF'
+        sudo tee /etc/nginx/sites-available/prodemyx-config > /dev/null <<NGINXEOF
         upstream backend_app {
             server 127.0.0.1:3000;
             keepalive 64;
@@ -214,16 +219,16 @@ jobs:
             client_max_body_size 50M;
             
             location /api/ {
-                rewrite ^/api/(.*)$ /$1 break;
+                rewrite ^/api/(.*)$ /\$1 break;
                 proxy_pass http://backend_app;
                 proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Upgrade \$http_upgrade;
                 proxy_set_header Connection 'upgrade';
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_cache_bypass $http_upgrade;
+                proxy_set_header Host \$host;
+                proxy_set_header X-Real-IP \$remote_addr;
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto \$scheme;
+                proxy_cache_bypass \$http_upgrade;
                 proxy_read_timeout 300s;
                 proxy_connect_timeout 75s;
             }
@@ -231,18 +236,18 @@ jobs:
             location /api-docs {
                 proxy_pass http://backend_app/api-docs;
                 proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Upgrade \$http_upgrade;
                 proxy_set_header Connection 'upgrade';
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_cache_bypass $http_upgrade;
+                proxy_set_header Host \$host;
+                proxy_set_header X-Real-IP \$remote_addr;
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto \$scheme;
+                proxy_cache_bypass \$http_upgrade;
             }
             
             location /app {
-                alias ${{ secrets.EC2_FRONTEND_PATH }};
-                try_files $uri $uri/ /app/index.html;
+                alias $FRONTEND_PATH;
+                try_files \$uri \$uri/ /app/index.html;
                 index index.html;
                 
                 location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
@@ -256,21 +261,21 @@ jobs:
                 index index.php;
                 
                 location ~ ^/phpmyadmin/(.+\.php)$ {
-                    alias /usr/share/phpmyadmin/$1;
+                    alias /usr/share/phpmyadmin/\$1;
                     fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
                     fastcgi_index index.php;
-                    fastcgi_param SCRIPT_FILENAME $request_filename;
+                    fastcgi_param SCRIPT_FILENAME \$request_filename;
                     include fastcgi_params;
                 }
                 
                 location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
-                    alias /usr/share/phpmyadmin/$1;
+                    alias /usr/share/phpmyadmin/\$1;
                 }
             }
             
             location / {
-                root ${{ secrets.EC2_PRODEMYX_PATH }};
-                try_files $uri $uri/ /index.html;
+                root $PRODEMYX_PATH;
+                try_files \$uri \$uri/ /index.html;
                 index index.html;
                 
                 location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
