@@ -33,7 +33,7 @@ jobs:
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
       run: |
         cd dashboard
-        npm run build
+        npm run build -- --base=/app/
 
     - name: Add SSH key
       uses: webfactory/ssh-agent@v0.7.0

@@ -291,13 +291,12 @@ jobs:
         echo "Installing dependencies..."
         npm install --legacy-peer-deps
         echo "Managing PM2 process..."
-        if pm2 list | grep -q prodemyx-backend; then
-          echo "Restarting existing backend..."
-          pm2 restart prodemyx-backend
-        else
-          echo "Starting new backend process..."
-          pm2 start server.js --name prodemyx-backend
-        fi
+        
+        # Stop any existing process to be safe
+        pm2 delete prodemyx-backend 2>/dev/null || true
+        
+        echo "Starting new backend process..."
+        pm2 start server.js --name prodemyx-backend
         pm2 save
         echo "Backend deployment completed!"
         EOF
