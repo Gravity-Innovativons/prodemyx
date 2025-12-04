@@ -39,35 +39,4 @@ do not delete this file
 do not run execution / tests
 
 
-Run ssh -o StrictHostKeyChecking=no ***@*** 'bash -s' << 'EOF'
-Installing dependencies...
-up to date, audited 1483 packages in 3s
-283 packages are looking for funding
-  run `npm fund` for details
-11 vulnerabilities (4 moderate, 7 high)
-To address issues that do not require attention, run:
-  npm audit fix
-To address all issues (including breaking changes), run:
-  npm audit fix --force
-Run `npm audit` for details.
-Managing PM2 process...
-[PM2] Applying action deleteProcessId on app [prodemyx-backend](ids: [ 0 ])
-[PM2] [prodemyx-backend](0) ✓
-┌────┬───────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
-│ id │ name      │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
-└────┴───────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
-Starting new backend process using npm start...
-[PM2] Starting /usr/bin/npm in fork_mode (1 instance)
-[PM2] Done.
-┌────┬─────────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
-│ id │ name                │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
-├────┼─────────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
-│ 0  │ prodemyx-backend    │ default     │ N/A     │ fork    │ 70615    │ 0s     │ 0    │ online    │ 0%       │ 15.7mb   │ ***   │ disabled │
-└────┴─────────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-  0   145    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-curl: (22) The requested URL returned error: 404
-Backend health check failed!
-Error: Process completed with exit code 1.
+
