@@ -39,58 +39,35 @@ do not delete this file
 do not run execution / tests
 
 
-
-
-nginx log:
-
-sudo tail -n 50 /var/log/nginx/error.log
-2025/12/04 06:15:03 [error] 51884#51884: *357 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:15:10 [error] 51884#51884: *357 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:20:41 [error] 52859#52859: *362 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:21:36 [error] 52859#52859: *362 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:21:38 [error] 52859#52859: *362 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:22:25 [error] 52860#52860: *370 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:33:41 [error] 53886#53886: *373 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:33:44 [error] 53886#53886: *373 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:35:36 [error] 53885#53885: *376 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:38:52 [error] 53886#53886: *378 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:39:36 [error] 54977#54977: *380 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:39:47 [error] 54977#54977: *380 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:39:50 [error] 54977#54977: *380 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api-docs HTTP/1.1", upstream: "http://127.0.0.1:5000/api-docs", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:47:18 [error] 56023#56023: *385 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api-docs HTTP/1.1", upstream: "http://127.0.0.1:3000/api-docs", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:47:25 [error] 56024#56024: *387 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:48:31 [error] 56024#56024: *387 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 06:48:39 [error] 56024#56024: *387 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:3000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:03:23 [error] 58118#58118: *393 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:03:29 [error] 58118#58118: *393 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:04:01 [error] 58117#58117: *396 connect() failed (111: Connection refused) while connecting to upstream, client: 23.23.253.54, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:06:25 [error] 58117#58117: *399 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:06:30 [error] 58117#58117: *399 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api-docs HTTP/1.1", upstream: "http://127.0.0.1:5000/api-docs", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:07:14 [error] 58117#58117: *402 access forbidden by rule, client: 23.27.78.25, server: _, request: "GET /.env HTTP/1.1", host: "16.171.24.103"
-2025/12/04 07:08:12 [error] 58117#58117: *404 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api-docs HTTP/1.1", upstream: "http://127.0.0.1:5000/api-docs", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:10:49 [error] 58117#58117: *407 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api-docs HTTP/1.1", upstream: "http://127.0.0.1:5000/api-docs", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:14:31 [error] 59439#59439: *409 connect() failed (111: Connection refused) while connecting to upstream, client: 152.58.200.233, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/api/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:22:34 [error] 60899#60899: *414 connect() failed (111: Connection refused) while connecting to upstream, client: 3.224.234.70, server: _, request: "GET /api/ HTTP/1.1", upstream: "http://127.0.0.1:5000/api/", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:29:06 [error] 62487#62487: *440 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:29:08 [error] 62486#62486: *441 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:30:50 [error] 62486#62486: *444 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:31:15 [error] 63370#63370: *446 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:33:06 [error] 63370#63370: *459 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 98.91.77.46, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:37:21 [error] 63370#63370: *468 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:44:05 [error] 64480#64480: *477 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:45:16 [error] 64480#64480: *482 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:46:08 [error] 64480#64480: *483 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:46:32 [error] 64480#64480: *484 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:46:34 [error] 65367#65367: *485 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 152.58.200.233, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:56:50 [error] 65367#65367: *507 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 23.23.253.54, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 07:56:59 [error] 65367#65367: *512 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 3.224.234.70, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 08:17:12 [error] 65368#65368: *546 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 23.23.253.54, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 08:23:17 [error] 65367#65367: *547 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 98.91.77.46, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:24:32 [error] 65367#65367: *626 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:29:15 [error] 65367#65367: *627 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:29:20 [error] 65367#65367: *628 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:31:25 [error] 65367#65367: *629 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:32:34 [error] 65367#65367: *631 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:35:57 [error] 65367#65367: *632 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:36:53 [error] 65367#65367: *633 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
-2025/12/04 09:43:22 [error] 65368#65368: *645 rewrite or internal redirection cycle while internally redirecting to "/app/index.html", client: 103.70.199.226, server: _, request: "GET /app/ HTTP/1.1", host: "ec2-16-171-24-103.eu-north-1.compute.amazonaws.com"
+Run ssh -o StrictHostKeyChecking=no ***@*** 'bash -s' << 'EOF'
+Installing dependencies...
+up to date, audited 1483 packages in 3s
+283 packages are looking for funding
+  run `npm fund` for details
+11 vulnerabilities (4 moderate, 7 high)
+To address issues that do not require attention, run:
+  npm audit fix
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+Run `npm audit` for details.
+Managing PM2 process...
+[PM2] Applying action deleteProcessId on app [prodemyx-backend](ids: [ 0 ])
+[PM2] [prodemyx-backend](0) ✓
+┌────┬───────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name      │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+└────┴───────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+Starting new backend process using npm start...
+[PM2] Starting /usr/bin/npm in fork_mode (1 instance)
+[PM2] Done.
+┌────┬─────────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name                │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼─────────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ prodemyx-backend    │ default     │ N/A     │ fork    │ 70615    │ 0s     │ 0    │ online    │ 0%       │ 15.7mb   │ ***   │ disabled │
+└────┴─────────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0   145    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (22) The requested URL returned error: 404
+Backend health check failed!
+Error: Process completed with exit code 1.

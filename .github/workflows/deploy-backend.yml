@@ -303,7 +303,7 @@ jobs:
         echo "Starting new backend process using npm start..."
         pm2 start npm --name prodemyx-backend -- run start -- --port=5000
         sleep 10 # Give the backend some time to start up
-        curl -f http://localhost:5000/health || (echo "Backend health check failed!"; exit 1)
+        curl -f http://localhost:5000/api-docs || (echo "Backend health check failed!"; exit 1)
         pm2 save
         echo "Backend deployment completed!"
         EOF
