@@ -73,7 +73,7 @@ TCP
 0.0.0.0/0
 
 
-
+http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/ http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com:3000 and http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com:5000 nothing is working
 
 fix these errors
 do not change project folders instead try to fix by changing the yml files only
