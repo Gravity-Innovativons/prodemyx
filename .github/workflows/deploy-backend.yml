@@ -284,7 +284,7 @@ jobs:
         sudo ln -sf /etc/nginx/sites-available/prodemyx-config /etc/nginx/sites-enabled/prodemyx-config
         sudo rm -f /etc/nginx/sites-enabled/default
         sudo nginx -t
-        sudo systemctl reload nginx
+        sudo systemctl restart nginx
         echo "Nginx configured successfully!"
         EOF
 
@@ -302,6 +302,8 @@ jobs:
         
         echo "Starting new backend process using npm start..."
         pm2 start npm --name prodemyx-backend -- run start -- --port=5000
+        sleep 10 # Give the backend some time to start up
+        curl -f http://localhost:5000/health || (echo "Backend health check failed!"; exit 1)
         pm2 save
         echo "Backend deployment completed!"
         EOF
