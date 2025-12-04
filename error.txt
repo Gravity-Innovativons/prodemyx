@@ -1,9 +1,9 @@
-GET http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ 500 (Internal Server Error)
+GET http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ 500 (Internal Server Error) - fix this first
+
 Prodemyx Deployed:
 
 Frontend: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com
-Dashboard: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app - not working 
-API docs: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs -was set to http://localhost:5000 need to add ec2 also
+API docs: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs
 DB: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/phpmyadmin
 
 db: prodemyx
@@ -20,48 +20,6 @@ EC2_PRODEMYX_PATH: /var/www/prodemyx-website
 VITE_API_URL: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api
 
 
-ec2 instance groups:
-
-
-–
-sgr-0db2b9490f26caa0a
-IPv4
-HTTP
-TCP
-80
-0.0.0.0/0
-–
-–
-sgr-0ad18b86771fdd7e1
-IPv4
-HTTPS
-TCP
-443
-0.0.0.0/0
-–
-–
-sgr-05562654c753fd33e
-IPv4
-Custom TCP
-TCP
-3000
-0.0.0.0/0
-–
-–
-sgr-0cfd7ecc1e90af1c9
-IPv4
-Custom TCP
-TCP
-5000
-0.0.0.0/0
-–
-–
-sgr-01132389622b10f80
-IPv4
-SSH
-TCP
-22
-0.0.0.0/0
 
 fix these errors
 do not change project folders instead try to fix by changing the yml files only
