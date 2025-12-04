@@ -1,7 +1,9 @@
-http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ shows empty page 
-http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/ shows 502 Bad Gateway nginx/1.24.0 (Ubuntu)
-http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs still shows 502 Bad Gateway nginx/1.24.0 (Ubuntu)
+http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ shows error page 
+http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/ shows Cannot GET /api/
+http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/users shows {"message":"Unauthorized"}
 
+
+on sql file update
 1. Your EC2 user is correct
 EC2_USER = ubuntu
 
@@ -65,10 +67,6 @@ TCP
 22
 0.0.0.0/0
 
-
-http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/ http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com:5000 nothing is working
-
-check all .env files
 fix these errors
 do not change project folders instead try to fix by changing the yml files only
 check yml files for reference

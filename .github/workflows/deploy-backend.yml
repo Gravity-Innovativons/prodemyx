@@ -243,8 +243,8 @@ jobs:
             }
             
             location /app/ {
-                alias /var/www/prodemyx-website/;
-                try_files \$uri \$uri/ /index.html;
+                alias /var/www/prodemyx-frontend/;
+                try_files $uri $uri/ /index.html;
             }
             
             location /phpmyadmin {
