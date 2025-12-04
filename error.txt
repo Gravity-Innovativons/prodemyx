@@ -5,19 +5,8 @@ http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs still shows 5
 1. Your EC2 user is correct
 EC2_USER = ubuntu
 
-
-This matches the official Ubuntu AMI and is valid.
-
-No changes needed.
-
 2. Your EC2 host is correct
 EC2_HOST = ec2-16-171-24-103.eu-north-1.compute.amazonaws.com
-
-
-This is a valid public DNS.
-Your GitHub Actions runner can reach it if the EC2 security group allows SSH from 0.0.0.0/0 or GitHub IP ranges.
-
-No changes needed here either.
 
 3. Your deployment directories are correct and valid
 

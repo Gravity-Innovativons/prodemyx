@@ -103,3 +103,5 @@ jobs:
         echo "========================================="
         echo "Access dashboard at: http://${{ secrets.EC2_HOST }}/app"
         echo "========================================="
+
+        
