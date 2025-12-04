@@ -43,6 +43,10 @@ const swaggerOptions = {
     },
     servers: [
       {
+        url: "http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api",
+        description: "EC2 server",
+      },
+      {
         url: "http://localhost:5000",
         description: "Local server",
       },
@@ -87,7 +91,7 @@ const pool = mysql.createPool({
   try {
     const connection = await pool.getConnection();
     console.log("Successfully connected to the database!");
-    
+
     // Check and create default admin user if not exists
     const [adminUsers] = await connection.query("SELECT id FROM users WHERE email = ?", ["admin@gmail.com"]);
     if (adminUsers.length === 0) {

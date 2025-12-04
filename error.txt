@@ -2,8 +2,8 @@ GET http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ 500 (Internal
 Prodemyx Deployed:
 
 Frontend: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com
-Dashboard: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app
-API docs: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs
+Dashboard: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app - not working 
+API docs: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs -was set to http://localhost:5000 need to add ec2 also
 DB: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/phpmyadmin
 
 db: prodemyx
