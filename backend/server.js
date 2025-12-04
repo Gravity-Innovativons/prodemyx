@@ -43,7 +43,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api",
+        url: "http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com",
         description: "EC2 server",
       },
       {
