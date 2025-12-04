@@ -42,28 +42,25 @@ jobs:
 
     - name: Create dashboard directory on EC2
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mkdir -p ${{ secrets.EC2_FRONTEND_PATH }} && sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} ${{ secrets.EC2_FRONTEND_PATH }}"
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mkdir -p /var/www/prodemyx-frontend && sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /var/www/prodemyx-frontend"
 
     - name: Deploy dashboard build to EC2
       run: |
         rsync -avz --delete \
           -e 'ssh -o StrictHostKeyChecking=no' \
           dashboard/dist/ \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.EC2_FRONTEND_PATH }}/
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/prodemyx-frontend/
 
     - name: Set permissions and reload Nginx
-      env:
-        FRONTEND_PATH: ${{ secrets.EC2_FRONTEND_PATH }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -s "$FRONTEND_PATH" << 'EOF'
-        FRONTEND_PATH=$1
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'bash -s' << 'EOF'
         set -e
         echo "========================================="
         echo "Dashboard Deployment"
         echo "========================================="
         echo "Setting permissions..."
-        sudo chown -R www-data:www-data "$FRONTEND_PATH"
-        sudo chmod -R 755 "$FRONTEND_PATH"
+        sudo chown -R www-data:www-data /var/www/prodemyx-frontend
+        sudo chmod -R 755 /var/www/prodemyx-frontend
         echo "Checking Nginx..."
         if ! command -v nginx > /dev/null 2>&1; then
           echo "Nginx not found. Please run backend deployment first."
@@ -75,7 +72,7 @@ jobs:
         echo "Reloading Nginx..."
         sudo systemctl reload nginx
         echo "Verifying dashboard..."
-        if [ -f "$FRONTEND_PATH/index.html" ]; then
+        if [ -f "/var/www/prodemyx-frontend/index.html" ]; then
           echo "✓ Dashboard files deployed successfully"
         else
           echo "✗ Dashboard index.html not found!"
@@ -106,4 +103,3 @@ jobs:
         echo "========================================="
         echo "Access dashboard at: http://${{ secrets.EC2_HOST }}/app"
         echo "========================================="
-        

@@ -45,28 +45,25 @@ jobs:
 
     - name: Create website directory on EC2
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mkdir -p ${{ secrets.EC2_PRODEMYX_PATH }} && sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} ${{ secrets.EC2_PRODEMYX_PATH }}"
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mkdir -p /var/www/prodemyx-website && sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /var/www/prodemyx-website"
 
     - name: Deploy website build to EC2
       run: |
         rsync -avz --delete \
           -e 'ssh -o StrictHostKeyChecking=no' \
           prodemyx/dist/ \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.EC2_PRODEMYX_PATH }}/
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/prodemyx-website/
 
     - name: Set permissions and reload Nginx
-      env:
-        PRODEMYX_PATH: ${{ secrets.EC2_PRODEMYX_PATH }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -s "$PRODEMYX_PATH" << 'EOF'
-        PRODEMYX_PATH=$1
+        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'bash -s' << 'EOF'
         set -e
         echo "========================================="
         echo "Prodemyx Website Deployment"
         echo "========================================="
         echo "Setting permissions..."
-        sudo chown -R www-data:www-data "$PRODEMYX_PATH"
-        sudo chmod -R 755 "$PRODEMYX_PATH"
+        sudo chown -R www-data:www-data /var/www/prodemyx-website
+        sudo chmod -R 755 /var/www/prodemyx-website
         echo "Checking Nginx..."
         if ! command -v nginx > /dev/null 2>&1; then
           echo "Nginx not found. Please run backend deployment first."
@@ -78,7 +75,7 @@ jobs:
         echo "Reloading Nginx..."
         sudo systemctl reload nginx
         echo "Verifying website..."
-        if [ -f "$PRODEMYX_PATH/index.html" ]; then
+        if [ -f "/var/www/prodemyx-website/index.html" ]; then
           echo "✓ Website files deployed successfully"
         else
           echo "✗ Website index.html not found!"
@@ -109,4 +106,3 @@ jobs:
         echo "========================================="
         echo "Access website at: http://${{ secrets.EC2_HOST }}/"
         echo "========================================="
-        
