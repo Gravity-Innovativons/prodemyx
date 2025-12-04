@@ -30,6 +30,9 @@ EC2_PRODEMYX_PATH    = /var/www/prodemyx-website
 All three are valid Unix absolute paths.
 Permissions can be set using chown/chmod.
 
+4. VITE_API_URL (github repo secret): http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api was set
+
+
 ec2 instance groups:
 
 
@@ -74,8 +77,9 @@ TCP
 0.0.0.0/0
 
 
-http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/ nothing is working
+http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/ http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com:5000 nothing is working
 
+check all .env files
 fix these errors
 do not change project folders instead try to fix by changing the yml files only
 check yml files for reference
