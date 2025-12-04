@@ -332,5 +332,3 @@ jobs:
         echo "  - Swagger Docs: Available at /api-docs"
         echo "========================================="
         EOF
-
-        
