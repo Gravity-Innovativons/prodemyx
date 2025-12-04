@@ -1,6 +1,6 @@
 http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ shows empty page 
 http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/ shows 502 Bad Gateway nginx/1.24.0 (Ubuntu)
-
+http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs still shows 502 Bad Gateway nginx/1.24.0 (Ubuntu)
 1. Your EC2 user is correct
 EC2_USER = ubuntu
 
