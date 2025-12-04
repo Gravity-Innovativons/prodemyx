@@ -139,6 +139,7 @@ jobs:
           sudo ufw allow 22/tcp || true
           sudo ufw allow 80/tcp || true
           sudo ufw allow 443/tcp || true
+          sudo ufw allow 5000/tcp || true
           sudo ufw --force enable || true
           echo "Firewall configured"
         fi
