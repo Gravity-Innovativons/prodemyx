@@ -433,7 +433,7 @@ app.post("/api/register", async (req, res) => {
  */
 app.post("/api/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, expected_role } = req.body;
 
     const conn = await pool.getConnection();
     const [rows] = await conn.query(
@@ -445,8 +445,16 @@ app.post("/api/login", async (req, res) => {
     if (!rows.length) return res.status(401).json({ message: "Invalid login" });
 
     const user = rows[0];
+
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(401).json({ message: "Invalid login" });
+
+    // 🚨 ROLE CHECK
+    if (expected_role && user.role !== expected_role) {
+      return res.status(403).json({
+        message: `You do not have ${expected_role} access. Your account role is '${user.role}'.`
+      });
+    }
 
     const token = createToken(user);
 
@@ -455,11 +463,13 @@ app.post("/api/login", async (req, res) => {
       token,
       user: { id: user.id, name: user.name, email: user.email, role: user.role },
     });
+
   } catch (err) {
     console.error("login error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 app.post("/api/auth/register-guest", async (req, res) => {
   try {
@@ -1075,9 +1085,9 @@ app.put(
     if (status) { query += "status=?, "; params.push(status); }
 
     // ADD PRICE
-    if (price) { 
-      query += "price=?, "; 
-      params.push(price); 
+    if (price) {
+      query += "price=?, ";
+      params.push(price);
     }
 
     // FILES
@@ -1235,6 +1245,91 @@ app.get("/api/instructor/dashboard", auth, async (req, res) => {
     schedules,
   });
 });
+
+
+// ========================================================
+// STUDENT — ENROLLED COURSES LIST
+// ========================================================
+app.get("/api/student/enrolled-courses", auth, studentOnly, async (req, res) => {
+  try {
+    const studentId = req.user.id;
+
+    const [rows] = await pool.query(
+      `
+      SELECT 
+        c.id,
+        c.title,
+        c.short_description,
+        c.duration,
+        c.price,
+        c.status,
+        c.zoom_link,
+        c.file AS material_file,
+        cat.name AS category_name,
+        u.name AS instructor_name
+      FROM user_course_access uca
+      JOIN courses c ON c.id = uca.course_id
+      LEFT JOIN categories cat ON cat.id = c.category_id
+      LEFT JOIN users u ON u.id = c.instructor_id
+      WHERE uca.user_id = ?
+      ORDER BY c.id DESC
+      `,
+      [studentId]
+    );
+
+    // FIX MATERIAL + FIX URLS
+    const updated = rows.map(c => ({
+      ...c,
+      zoom_link: c.zoom_link || null,
+      material_file: c.material_file ? `http://localhost:5000${c.material_file}` : null
+    }));
+
+    res.json(updated);
+
+  } catch (err) {
+    console.error("Enrolled courses error:", err);
+    res.status(500).json({ message: "Server error loading enrolled courses" });
+  }
+});
+
+
+
+
+// =============================
+//  STUDENT DASHBOARD SUMMARY
+// =============================
+app.get("/api/student/dashboard", auth, studentOnly, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // TOTAL COURSES
+    const [[{ total_courses }]] = await pool.query(
+      "SELECT COUNT(*) AS total_courses FROM courses"
+    );
+
+    // ENROLLED COURSES
+    const [[{ enrolled }]] = await pool.query(
+      "SELECT COUNT(*) AS enrolled FROM user_course_access WHERE user_id = ?",
+      [userId]
+    );
+
+    // COMPLETED (future feature)
+    const completed = 0;
+
+    return res.json({
+      total_courses,
+      enrolled_courses: enrolled,
+      completed_courses: completed,
+      in_progress: enrolled - completed
+    });
+
+  } catch (error) {
+    console.error("Dashboard error:", error);
+    res.status(500).json({ message: "Server error loading dashboard" });
+  }
+});
+
+
 
 // ========================================================
 // PURCHASE / ENROLLMENT / PAYMENT

@@ -18,7 +18,6 @@ export default function PublicCourseDetails() {
   const [suggested, setSuggested] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // See More toggle
   const [expanded, setExpanded] = useState(false);
 
   const dispatch = useDispatch<any>();
@@ -29,11 +28,16 @@ export default function PublicCourseDetails() {
   }, [id]);
 
   async function loadCourse() {
+    // FIX: Prevent old data from flashing
+    setCourse(null);
+    setSuggested([]);
+    setExpanded(false);
+    setLoading(true);
+
     try {
       const data = await apiFetch(`/public/courses/${id}`);
       setCourse(data || null);
 
-      // fetch suggested courses
       const all = await apiFetch(`/public/courses`);
       const recommended = all
         .filter((c: Course) => c.id !== Number(id))
@@ -188,15 +192,16 @@ export default function PublicCourseDetails() {
 
                   <h4 className="text-lg font-semibold">{s.title}</h4>
 
+                  {/* FIXED: use s.long_description, NOT course.long_description */}
                   <p className="text-gray-600 mt-2 line-clamp-2">
                     {course.long_description || "No description"}
                   </p>
 
                   <h5 className="price mt-3">Rs {s.price}</h5>
 
-                  {/* FIXED BUTTON */}
+                  {/* VIEW COURSE */}
                   <button
-                    onClick={() => navigate(`/Cart/`)}
+                    onClick={() => navigate(`/course/${s.id}`)}
                     className="mt-3 w-[140px] h-[45px]"
                     style={{
                       backgroundColor: "#F9C93A",
@@ -209,7 +214,7 @@ export default function PublicCourseDetails() {
                   >
                     View Course
                   </button>
-                  
+
                 </div>
               </div>
             ))}

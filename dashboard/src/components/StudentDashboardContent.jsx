@@ -1,18 +1,37 @@
 import React, { useEffect, useState } from "react";
 
-const apiFetch = async (url, options = {}) => {
+import { API_BASE_URL } from "../config";
+
+// OR: import BASE_URL from wherever you're exporting it
+
+// Fallback to localhost if env is missing
+const BASE_URL = API_BASE_URL || import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+export const apiFetch = async (url, options = {}) => {
   const token = localStorage.getItem("token");
-  const res = await fetch(`http://localhost:5000${url}`, {
+
+  const res = await fetch(`${BASE_URL}${url}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
     },
     ...options,
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || "API Error");
+
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error("Invalid JSON response from server");
+  }
+
+  if (!res.ok) {
+    throw new Error(data.message || "API Error");
+  }
+
   return data;
 };
+
 
 const StudentDashboardContent = () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -124,8 +143,8 @@ const StudentDashboardContent = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 py-1 text-xs rounded-full ${course.status === "published"
-                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                            : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                          : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
                           }`}
                       >
                         {course.status || "draft"}

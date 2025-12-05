@@ -11,6 +11,7 @@ const apiFetch = async (url, options = {}) => {
     },
     ...options,
   });
+
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || "API Error");
   return data;
@@ -18,13 +19,15 @@ const apiFetch = async (url, options = {}) => {
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
+
   const [stats, setStats] = useState({
-    total_users: 0,
     total_courses: 0,
-    total_enrollments: 0,
+    enrolled_courses: 0,
+    completed_courses: 0,
+    in_progress: 0,
   });
 
-  // Redirect if not logged in
+  // Validate student login
   useEffect(() => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -34,15 +37,17 @@ const StudentDashboard = () => {
     }
   }, [navigate]);
 
-  // Load summary stats
+  // Load dashboard statistics
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-        const data = await apiFetch("/api/reports/summary");
+        const data = await apiFetch("/api/student/dashboard");
+
         setStats({
-          total_users: data.total_users,
           total_courses: data.total_courses,
-          total_enrollments: data.total_enrollments,
+          enrolled_courses: data.enrolled_courses,
+          completed_courses: data.completed_courses,
+          in_progress: data.in_progress,
         });
       } catch (err) {
         console.error("Dashboard error:", err);
@@ -68,7 +73,7 @@ const StudentDashboard = () => {
               Dashboard
             </h1>
 
-            {/* Welcome Section */}
+            {/* Welcome */}
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                 Welcome back, {user.name || "Student"}!
@@ -81,7 +86,7 @@ const StudentDashboard = () => {
             {/* Stats Section */}
             <StatsSection stats={stats} />
 
-            {/* Charts Section */}
+            {/* Charts section (hidden for now) */}
             <ChartsAndLists />
           </main>
         </div>
@@ -125,9 +130,21 @@ const TopNavbar = () => {
 const StatsSection = ({ stats }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
     <StatBox title="Total Courses" value={stats.total_courses} icon="school" />
-    <StatBox title="Enrolled Courses" value={stats.total_enrollments} icon="book" />
-    <StatBox title="Completed" value="12" icon="check_circle" />
-    <StatBox title="In Progress" value="5" icon="pending" />
+    <StatBox
+      title="Enrolled Courses"
+      value={stats.enrolled_courses}
+      icon="book"
+    />
+    <StatBox
+      title="Completed"
+      value={stats.completed_courses}
+      icon="check_circle"
+    />
+    <StatBox
+      title="In Progress"
+      value={stats.in_progress}
+      icon="pending"
+    />
   </div>
 );
 
@@ -143,29 +160,7 @@ const StatBox = ({ title, value, icon }) => (
 
 /* ---------------- Charts Section ---------------- */
 const ChartsAndLists = () => (
-  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    {/* <div className="lg:col-span-2 bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-        Learning Progress
-      </h3>
-      <img
-        className="w-full h-64 object-contain"
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPOxvRpa2Iy6QvuITwqMNwO3O80J_4LZ99dHynTdTz0RC3V_f9Kp5RZfIAV99Z-xC8OEfym7PbxKvyOBzUvuR4gwthZbYJ_1wPo96IOXQHp_CeouqvfRJS17xGLekvCsuxT3ozpgdNLZO8i2zE_iQW9Qxqn5_MV2guuFDAmF8XaeI0B3bTylNVhtbkYPSIuFkSgvpy5zQ1y046hw3w7BckEIG1c26Nsjx9Ei5wcCerap8PClYkC5CavvsJa6GFcYxbQwJcVAYai7U"
-        alt="Chart"
-      />
-    </div> */}
-
-    {/* <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-        Course Status
-      </h3>
-      <img
-        className="w-full h-52 object-contain"
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNiM-hBGqC93ps86ez86uTRYOGIkuIwkEkeBEusimKsAdaTmypB7y2xYeZYYMQBnfCZeqCh1g7808kN-TA92R7lzrhPjMLK-Z5duYQzNfQA8Q-Z9EuFNB75qsB3jLCPgL3_odEbPeSdizmOWWUpCR3iUzw9xdqDoTwCdiAGgGQOg1RRcisKpzoaqSN375S0lDsWMFpikEjY6YipCBdXo62TJkle5TfOrzUkInVsh1xA2854j4jAEVOajp8L0JUh3fBkPFshkHuy0U"
-        alt="Donut Chart"
-      />
-    </div> */}
-  </div>
+  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
 );
 
 export default StudentDashboard;

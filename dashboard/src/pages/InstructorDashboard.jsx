@@ -127,16 +127,16 @@ const StatBox = ({ title, value }) => (
 /* ---------------- Charts Section ---------------- */
 const ChartsAndLists = () => (
   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div className="lg:col-span-2 bg-white p-6 rounded-xl border">
+    {/* <div className="lg:col-span-2 bg-white p-6 rounded-xl border">
       <h3 className="text-lg font-semibold mb-4">Active Users</h3>
       <img
         className="w-full h-64 object-contain"
         src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPOxvRpa2Iy6QvuITwqMNwO3O80J_4LZ99dHynTdTz0RC3V_f9Kp5RZfIAV99Z-xC8OEfym7PbxKvyOBzUvuR4gwthZbYJ_1wPo96IOXQHp_CeouqvfRJS17xGLekvCsuxT3ozpgdNLZO8i2zE_iQW9Qxqn5_MV2guuFDAmF8XaeI0B3bTylNVhtbkYPSIuFkSgvpy5zQ1y046hw3w7BckEIG1c26Nsjx9Ei5wcCerap8PClYkC5CavvsJa6GFcYxbQwJcVAYai7U"
         alt="Chart"
       />
-    </div>
+    </div> */}
 
-    <div className="bg-white p-6 rounded-xl border">
+    {/* <div className="bg-white p-6 rounded-xl border">
       <h3 className="text-lg font-semibold mb-4">Enrollment Status</h3>
       <img
         className="w-full h-52 object-contain"
@@ -144,7 +144,7 @@ const ChartsAndLists = () => (
         src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNiM-hBGqC93ps86ez86uTRYOGIkuIwkEkeBEusimKsAdaTmypB7y2xYeZYYMQBnfCZeqCh1g7808kN-TA92R7lzrhPjMLK-Z5duYQzNfQA8Q-Z9EuFNB75qsB3jLCPgL3_odEbPeSdizmOWWUpCR3iUzw9xdqDoTwCdiAGgGQOg1RRcisKpzoaqSN375S0lDsWMFpikEjY6YipCBdXo62TJkle5TfOrzUkInVsh1xA2854j4jAEVOajp8L0JUh3fBkPFshkHuy0U"
         alt="Donut Chart"
       />
-    </div>
+    </div> */}
   </div>
 );
 
