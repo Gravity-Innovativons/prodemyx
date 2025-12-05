@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
-import { apiFetch } from "../api";
+import { apiFetch, BASE_URL } from "../api";
 
 export default function CreateCourse() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function CreateCourse() {
       const formData = new FormData();
       formData.append("material", file);
 
-      const res = await fetch("http://localhost:5000/api/upload-material", {
+      const res = await fetch(`${BASE_URL}/api/upload-material`, {
         method: "POST",
         body: formData,
       });
@@ -89,7 +89,7 @@ export default function CreateCourse() {
       const formData = new FormData();
       formData.append("cover", file);
 
-      const res = await fetch("http://localhost:5000/api/upload-cover", {
+      const res = await fetch(`${BASE_URL}/api/upload-cover`, {
         method: "POST",
         body: formData,
       });
@@ -327,7 +327,7 @@ export default function CreateCourse() {
                   {coverPath && (
                     <div className="mt-4 p-3 bg-gray-100 rounded-lg flex items-center gap-3">
                       <img
-                        src={`http://localhost:5000${coverPath}`}
+                        src={`${BASE_URL}${coverPath}`}
                         className="w-16 h-16 rounded object-cover"
                       />
                       <div>

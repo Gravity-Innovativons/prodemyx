@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/sidebar";
-import { apiFetch } from "../api";
+import { apiFetch, BASE_URL } from "../api";
 
 export default function EditCourse() {
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ export default function EditCourse() {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch(`http://localhost:5000/api/courses/${id}`, {
+      const res = await fetch(`${BASE_URL}/api/courses/${id}`, {
         method: "PUT",
         headers: { Authorization: token ? `Bearer ${token}` : "" },
         body: formData,

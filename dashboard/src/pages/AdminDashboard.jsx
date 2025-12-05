@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { BASE_URL } from "../api.js";
 
 // 🔐 Token-based API fetch
 const apiFetch = async (url, options = {}) => {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`http://localhost:5000${url}`, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
@@ -57,7 +58,7 @@ const AdminDashboard = () => {
   return (
     <div className="bg-background-light font-display text-[#333333] min-h-screen">
       <div className="relative flex min-h-screen w-full">
-        
+
         <Sidebar />
 
         {/* MAIN CONTENT */}

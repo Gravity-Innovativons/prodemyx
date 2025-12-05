@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../api.js";
 
 import { API_BASE_URL } from "../config";
-
-// OR: import BASE_URL from wherever you're exporting it
-
-// Fallback to localhost if env is missing
-const BASE_URL = API_BASE_URL || import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export const apiFetch = async (url, options = {}) => {
   const token = localStorage.getItem("token");
@@ -173,7 +169,7 @@ const StudentDashboardContent = () => {
                           href={
                             course.file.startsWith("http")
                               ? course.file
-                              : `http://localhost:5000${course.file}`
+                              : `${BASE_URL}${course.file}`
                           }
                           target="_blank"
                           rel="noreferrer"

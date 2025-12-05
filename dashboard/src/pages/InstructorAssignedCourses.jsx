@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InstructorSidebar from "../components/InstructorSidebar";
+import { BASE_URL } from "../api.js";
 
 const apiFetch = async (url, options = {}) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000${url}`, {
+    const res = await fetch(`${BASE_URL}${url}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: token ? `Bearer ${token}` : "",
@@ -153,8 +154,8 @@ const InstructorAssignedCourses = () => {
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <span
                                                                 className={`px-2 py-1 text-xs rounded-full ${course.status === "published"
-                                                                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                                                                        : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                                                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                                                                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
                                                                     }`}
                                                             >
                                                                 {course.status || "draft"}
@@ -183,7 +184,7 @@ const InstructorAssignedCourses = () => {
                                                                     href={
                                                                         course.file.startsWith("http")
                                                                             ? course.file
-                                                                            : `http://localhost:5000${course.file}`
+                                                                            : `${BASE_URL}${course.file}`
                                                                     }
                                                                     target="_blank"
                                                                     rel="noreferrer"

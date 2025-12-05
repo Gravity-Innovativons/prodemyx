@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StudentSidebar from "../components/StudentSidebar";
+import { BASE_URL } from "../api.js";
 
 const apiFetch = async (url, options = {}) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000${url}`, {
+    const res = await fetch(`${BASE_URL}${url}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: token ? `Bearer ${token}` : "",
@@ -124,11 +125,10 @@ const StudentEnrolledCourses = () => {
 
                                                         <td className="px-6 py-4 text-sm">
                                                             <span
-                                                                className={`px-2 py-1 text-xs rounded-full ${
-                                                                    course.status === "published"
+                                                                className={`px-2 py-1 text-xs rounded-full ${course.status === "published"
                                                                         ? "bg-green-100 text-green-800"
                                                                         : "bg-yellow-100 text-yellow-800"
-                                                                }`}
+                                                                    }`}
                                                             >
                                                                 {course.status}
                                                             </span>
@@ -151,17 +151,17 @@ const StudentEnrolledCourses = () => {
 
                                                         {/* MATERIAL FILE */}
                                                         <td className="px-6 py-4 text-sm">
-                                                          {course.file ? (
-    <a
-        href={course.file.startsWith("http") ? course.file : `http://localhost:5000${course.file}`}
-        target="_blank"
-        className="bg-green-600 text-white px-3 py-1 rounded-lg"
-    >
-        View
-    </a>
-) : (
-    <span className="text-gray-400">No Files</span>
-)}
+                                                            {course.file ? (
+                                                                <a
+                                                                    href={course.file.startsWith("http") ? course.file : `${BASE_URL}${course.file}`}
+                                                                    target="_blank"
+                                                                    className="bg-green-600 text-white px-3 py-1 rounded-lg"
+                                                                >
+                                                                    View
+                                                                </a>
+                                                            ) : (
+                                                                <span className="text-gray-400">No Files</span>
+                                                            )}
 
                                                         </td>
                                                     </tr>

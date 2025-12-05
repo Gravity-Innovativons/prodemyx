@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InstructorSidebar from "../components/InstructorSidebar";
 import Sidebar from "../components/sidebar";
+import { BASE_URL } from "../api.js";
 
 export default function CourseManagement() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function CourseManagement() {
   // Token-aware API helper
   const apiFetch = async (url, options = {}) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000${url}`, {
+    const res = await fetch(`${BASE_URL}${url}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -186,8 +187,8 @@ export default function CourseManagement() {
 
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 py-1 text-xs rounded-full ${course.status === 'published'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-yellow-100 text-yellow-800'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-yellow-100 text-yellow-800'
                             }`}>
                             {course.status || 'draft'}
                           </span>
@@ -294,8 +295,8 @@ export default function CourseManagement() {
                     Status
                   </label>
                   <span className={`px-2 py-1 text-xs rounded-full ${selectedCourse.status === 'published'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-yellow-100 text-yellow-800'
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-yellow-100 text-yellow-800'
                     }`}>
                     {selectedCourse.status || 'draft'}
                   </span>
@@ -354,7 +355,7 @@ export default function CourseManagement() {
                       Course Photo
                     </label>
                     <img
-                      src={selectedCourse.photo.startsWith('http') ? selectedCourse.photo : `http://localhost:5000${selectedCourse.photo}`}
+                      src={selectedCourse.photo.startsWith('http') ? selectedCourse.photo : `${BASE_URL}${selectedCourse.photo}`}
                       alt={selectedCourse.title}
                       className="w-full max-w-md rounded-lg"
                     />
@@ -368,7 +369,7 @@ export default function CourseManagement() {
                       Course Material
                     </label>
                     <a
-                      href={selectedCourse.file.startsWith('http') ? selectedCourse.file : `http://localhost:5000${selectedCourse.file}`}
+                      href={selectedCourse.file.startsWith('http') ? selectedCourse.file : `${BASE_URL}${selectedCourse.file}`}
                       target="_blank"
                       rel="noreferrer"
                       className="text-blue-600 hover:underline"

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../api.js";
 
 export default function CategoryCourses() {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export default function CategoryCourses() {
 
   const loadCourses = async () => {
     try {
-      const res = await fetch("http://localhost:5000/public/courses");
+      const res = await fetch(`${BASE_URL}/public/courses`);
       if (!res.ok) throw new Error("Failed to load courses");
 
       const all = await res.json();
@@ -36,7 +37,7 @@ export default function CategoryCourses() {
 
   const loadCategoryName = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/categories", {
+      const res = await fetch(`${BASE_URL}/api/categories`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

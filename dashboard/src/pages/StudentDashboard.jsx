@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StudentSidebar from "../components/StudentSidebar";
+import { BASE_URL } from "../api.js";
 
 const apiFetch = async (url, options = {}) => {
   const token = localStorage.getItem("token");
-  const res = await fetch(`http://localhost:5000${url}`, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",

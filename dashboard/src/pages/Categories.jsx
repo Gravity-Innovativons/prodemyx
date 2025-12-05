@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../api.js";
 
 export default function Categories() {
   const [groups, setGroups] = useState([]);
@@ -12,7 +13,7 @@ export default function Categories() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("http://localhost:5000/public/courses");
+        const res = await fetch(`${BASE_URL}/public/courses`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const courses = await res.json();

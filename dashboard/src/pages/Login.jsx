@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BASE_URL } from "../api.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export default function Login() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/login", {
+      const res = await fetch(`${BASE_URL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,12 +37,12 @@ export default function Login() {
 
       // 🚀 Redirect to Dashboard (FOR ALL ROLES)
       if (data.user.role === "admin") {
-  window.location.href = "/admindashboard";
-} else if (data.user.role === "instructor") {
-  window.location.href = "/instructor/dashboard";
-} else {
-  window.location.href = "/student/dashboard";
-}
+        window.location.href = "/admindashboard";
+      } else if (data.user.role === "instructor") {
+        window.location.href = "/instructor/dashboard";
+      } else {
+        window.location.href = "/student/dashboard";
+      }
 
 
     } catch (err) {

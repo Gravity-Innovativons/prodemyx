@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
+import { BASE_URL } from "../api.js";
 
 export default function UserManagement() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function UserManagement() {
   // Token-aware API helper
   const apiFetch = async (url, options = {}) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000${url}`, {
+    const res = await fetch(`${BASE_URL}${url}`, {
       headers: {
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -321,10 +322,10 @@ export default function UserManagement() {
 
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 text-xs rounded-full ${u.role === 'admin'
-                            ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-                            : u.role === 'instructor'
-                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                              : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                          ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+                          : u.role === 'instructor'
+                            ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                            : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                           }`}>
                           {u.role || "-"}
                         </span>
@@ -469,10 +470,10 @@ export default function UserManagement() {
                     </select>
                   ) : (
                     <span className={`px-2 py-1 text-xs rounded-full ${selectedUser.role === 'admin'
-                        ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-                        : selectedUser.role === 'instructor'
-                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                          : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                      ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+                      : selectedUser.role === 'instructor'
+                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                        : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                       }`}>
                       {selectedUser.role || "-"}
                     </span>

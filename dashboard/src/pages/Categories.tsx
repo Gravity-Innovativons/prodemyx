@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../api.js";
 
 type Course = {
   id: number;
@@ -29,7 +30,7 @@ export default function Categories() {
       setError(null);
       try {
         // public endpoint that returns all courses with category_name
-        const res = await fetch("http://localhost:5000/public/courses");
+        const res = await fetch(`${BASE_URL}/public/courses`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const courses: Course[] = await res.json();
 

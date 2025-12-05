@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
+import { BASE_URL } from "../api.js";
 
 import {
   LineChart,
@@ -20,7 +21,7 @@ export default function Reports() {
   // Your global fetch wrapper
   const apiFetch = async (url, options = {}) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000${url}`, {
+    const res = await fetch(`${BASE_URL}${url}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : undefined,
@@ -149,13 +150,12 @@ export default function Reports() {
                   <td className="px-6 py-4">{row.course}</td>
                   <td className="px-6 py-4">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        row.status === "completed"
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${row.status === "completed"
                           ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
                           : row.status === "in_progress"
-                          ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
-                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-                      }`}
+                            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
+                            : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+                        }`}
                     >
                       {row.status.replace("_", " ")}
                     </span>

@@ -1,4 +1,5 @@
 // src/utils/auth.js
+import { BASE_URL } from "../api.js";
 
 export function logout() {
   localStorage.removeItem("isAdmin");   // FIXED: remove admin flag
@@ -6,7 +7,7 @@ export function logout() {
 }
 
 export async function login(email, password) {
-  const res = await fetch("http://localhost:5000/api/login", {
+  const res = await fetch(`${BASE_URL}/api/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),

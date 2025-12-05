@@ -1,14 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../api.js";
+
+type Course = {
+  id: number;
+  title: string;
+  photo?: string | null;
+  price?: number | null;
+  category_id?: number | null;
+  category_name?: string | null;
+};
+
+type Category = {
+  id: number;
+  name: string;
+};
 
 export default function CategoryCourses() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [courses, setCourses] = useState([]);
-  const [categoryName, setCategoryName] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [categoryName, setCategoryName] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadCourses();
@@ -18,12 +33,12 @@ export default function CategoryCourses() {
   // Load courses under this category (FROM /public/courses)
   const loadCourses = async () => {
     try {
-      const res = await fetch("http://localhost:5000/public/courses");
+      const res = await fetch(`${BASE_URL}/public/courses`);
       if (!res.ok) throw new Error("Failed to load courses");
 
-      const all = await res.json();
+      const all: Course[] = await res.json();
       const filtered = all.filter(
-        (c) => String(c.category_id) === String(id)
+        (c: Course) => String(c.category_id) === String(id)
       );
 
       setCourses(filtered);
@@ -38,14 +53,14 @@ export default function CategoryCourses() {
   // Load category name using /api/categories
   const loadCategoryName = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/categories", {
+      const res = await fetch(`${BASE_URL}/api/categories`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const data = await res.json();
+      const data: Category[] = await res.json();
 
-      const match = data.find((c) => String(c.id) === String(id));
+      const match = data.find((c: Category) => String(c.id) === String(id));
       if (match) setCategoryName(match.name);
     } catch (err) {
       console.error("Failed to load category name:", err);
@@ -92,7 +107,7 @@ export default function CategoryCourses() {
                 alt={course.title}
                 className="w-full h-48 object-cover rounded-xl mb-4"
                 onError={(e) => {
-                  e.target.src = "/placeholder.jpg";
+                  (e.target as HTMLImageElement).src = "/placeholder.jpg";
                 }}
               />
 
