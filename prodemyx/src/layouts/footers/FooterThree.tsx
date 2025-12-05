@@ -105,7 +105,7 @@ const FooterThree = () => {
             <img src="/assets/img/others/h5_footer_shape03.svg" alt="shape" />
             <img src="/assets/img/others/h5_footer_shape04.svg" alt="shape" />
             <div className="shape-inner">
-               <svg xmlns="http://www.w3.org/2000/svg" width="149" height="297" viewBox="0 0 149 297" fill="none" data-inject-url="http://127.0.0.1:5500/skillgro-html/assets/img/others/h5_footer_shape05.svg" className="injectable">
+               <svg xmlns="http://www.w3.org/2000/svg" width="149" height="297" viewBox="0 0 149 297" fill="none"  className="injectable">
                   <path d="M6.68393 1.59054C17.3726 27.3157 44.6727 47.975 45.5164 74.5472C45.8181 84.7251 41.9119 94.1092 37.6106 102.83C28.8057 120.445 17.7043 136.826 10.2968 155.245C2.78804 173.752 -0.933565 195.021 5.08664 215.732C10.9123 235.808 25.4973 253.161 41.4161 267.559C54.2504 279.193 68.9028 289.664 84.9267 293.333C108.962 298.939 132.25 288.527 148.169 272.215C164.088 255.903 173.933 234.582 183.875 213.579" stroke="#4B4889" strokeWidth="3" strokeMiterlimit="10" strokeLinecap="round" strokeDasharray="10.48 10.48"></path>
                </svg>
             </div>

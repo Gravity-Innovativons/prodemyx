@@ -36,6 +36,7 @@ jobs:
         VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
       run: |
         cd prodemyx
+        echo "VITE_API_URL: $VITE_API_URL"
         npm run build
 
     - name: Add SSH key

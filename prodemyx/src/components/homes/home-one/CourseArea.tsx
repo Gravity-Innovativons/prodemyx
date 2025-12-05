@@ -1,6 +1,7 @@
 // src/pages/CourseArea.tsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../../../src/api";
 
 interface Course {
   id: number;
@@ -15,7 +16,7 @@ const CourseArea = () => {
 
   // Fetch all courses
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/public/courses")
+    fetch(`${API_BASE_URL}/public/courses`)
       .then((r) => r.json())
       .then((data) => {
         setBackendCourses(
