@@ -30,15 +30,31 @@ export default function Categories() {
   }, []);
 
   async function loadCategories() {
-    const res = await fetch(`${API_BASE_URL}/public/categories`);
-    const data = await res.json();
-    setCategories(data);
+    try {
+      const res = await fetch(`${API_BASE_URL}/public/categories`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.json();
+      setCategories(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+      setCategories([]);
+    }
   }
 
   async function loadCourses() {
-    const res = await fetch(`${API_BASE_URL}/public/courses`);
-    const data = await res.json();
-    setCourses(data);
+    try {
+      const res = await fetch(`${API_BASE_URL}/public/courses`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.json();
+      setCourses(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Failed to fetch courses:", error);
+      setCourses([]);
+    }
   }
 
   const filteredCourses =

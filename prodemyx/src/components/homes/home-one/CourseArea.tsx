@@ -17,17 +17,31 @@ const CourseArea = () => {
   // Fetch all courses
   useEffect(() => {
     fetch(`${API_BASE_URL}/public/courses`)
-      .then((r) => r.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        setBackendCourses(
-          data.map((c: any) => ({
-            id: c.id,
-            title: c.title,
-            category: c.category_name,
-            price: c.price || 0,
-            thumb: c.photo || "/assets/img/courses/default.png",
-          }))
-        );
+        if (Array.isArray(data)) {
+          setBackendCourses(
+            data.map((c: any) => ({
+              id: c.id,
+              title: c.title,
+              category: c.category_name,
+              price: c.price || 0,
+              thumb: c.photo || "/assets/img/courses/default.png",
+            }))
+          );
+        } else {
+          console.error("API response is not an array:", data);
+          setBackendCourses([]); // Set to empty array to prevent .map error
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch courses:", error);
+        setBackendCourses([]); // Ensure component doesn't crash on fetch error
       });
   }, []);
 

@@ -30,6 +30,8 @@ const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
+const publicUrl = process.env.PUBLIC_URL || "http://localhost:5000";
+
 // ========================================================
 // SWAGGER SETUP
 // ========================================================
@@ -1130,7 +1132,8 @@ app.put(
  *         description: List of public courses
  */
 app.get("/public/courses", async (_, res) => {
-  const [rows] = await pool.query(`
+  try {
+    const [rows] = await pool.query(`
       SELECT 
         c.id,
         c.title,
@@ -1145,13 +1148,17 @@ app.get("/public/courses", async (_, res) => {
       ORDER BY c.id DESC
   `);
 
-  const mapped = rows.map(c => ({
-    ...c,
-    photo: c.photo ? `http://localhost:5000${c.photo}` : null,
-    material_url: c.file ? `http://localhost:5000${c.file}` : null,
-  }));
+    const mapped = rows.map((c) => ({
+      ...c,
+      photo: c.photo ? `${publicUrl}/api${c.photo}` : null,
+      material_url: c.file ? `${publicUrl}/api${c.file}` : null,
+    }));
 
-  res.json(mapped);
+    res.json(mapped);
+  } catch (err) {
+    console.error("Error fetching public courses:", err);
+    res.status(500).json({ message: "Error loading courses" });
+  }
 });
 
 // PUBLIC course details
@@ -1174,24 +1181,28 @@ app.get("/public/courses", async (_, res) => {
  *         description: Course not found
  */
 app.get("/public/courses/:id", async (req, res) => {
-  const id = req.params.id;
+  try {
+    const id = req.params.id;
 
-  const [rows] = await pool.query(
-    "SELECT * FROM courses WHERE id=? LIMIT 1",
-    [id]
-  );
+    const [rows] = await pool.query(
+      "SELECT * FROM courses WHERE id=? LIMIT 1",
+      [id]
+    );
 
-  if (!rows.length)
-    return res.status(404).json({ message: "not_found" });
+    if (!rows.length) return res.status(404).json({ message: "not_found" });
 
-  const course = rows[0];
+    const course = rows[0];
 
-  course.photo = course.photo ? `http://localhost:5000${course.photo}` : null;
-  course.material_url = course.file
-    ? `http://localhost:5000${course.file}`
-    : null;
+    course.photo = course.photo ? `${publicUrl}/api${course.photo}` : null;
+    course.material_url = course.file
+      ? `${publicUrl}/api${course.file}`
+      : null;
 
-  res.json(course);
+    res.json(course);
+  } catch (err) {
+    console.error(`Error fetching course ${req.params.id}:`, err);
+    res.status(500).json({ message: "Error loading course details" });
+  }
 });
 
 // ========================================================
@@ -1278,10 +1289,12 @@ app.get("/api/student/enrolled-courses", auth, studentOnly, async (req, res) => 
     );
 
     // FIX MATERIAL + FIX URLS
-    const updated = rows.map(c => ({
+    const updated = rows.map((c) => ({
       ...c,
       zoom_link: c.zoom_link || null,
-      material_file: c.material_file ? `http://localhost:5000${c.material_file}` : null
+      material_file: c.material_file
+        ? `${publicUrl}/api${c.material_file}`
+        : null,
     }));
 
     res.json(updated);
