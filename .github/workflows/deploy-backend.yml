@@ -222,8 +222,9 @@ jobs:
                 return 301 /api-docs;
             }
 
-                         location /api/ {
-                             proxy_pass http://backend_app/api/;                proxy_http_version 1.1;
+            location /api/ {
+                proxy_pass http://backend_app/api/;
+                proxy_http_version 1.1;
                 proxy_set_header Upgrade \$http_upgrade;
                 proxy_set_header Connection 'upgrade';
                 proxy_set_header Host \$host;
@@ -246,7 +247,7 @@ jobs:
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_cache_bypass \$http_upgrade;
             }
-            
+
             location /phpmyadmin {
                 root /usr/share;
                 index index.php index.html index.htm;
@@ -262,7 +263,7 @@ jobs:
                     root /usr/share;
                 }
             }
-            
+
             location /app/ {
                 alias \${DASHBOARD_PATH}/;
                 try_files \$uri \$uri/ /app/index.html;
