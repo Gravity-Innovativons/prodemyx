@@ -76,9 +76,7 @@ export default function CategoryCourses() {
       </h1>
 
       {/* LOADING */}
-      {loading && (
-        <p className="text-center text-gray-500">Loading...</p>
-      )}
+      {loading && <p className="text-center text-gray-500">Loading...</p>}
 
       {/* ERROR */}
       {!loading && error && (
