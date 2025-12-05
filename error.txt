@@ -1,0 +1,77 @@
+Now on remote deploy http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com courses are not listing: /api/public/courses:1  Failed to load resource: the server responded with a status of 404 (Not Found) Understand this error
+index-pMI4RssK.js:111 Failed to fetch courses: Error: HTTP error! status: 404
+    at index-pMI4RssK.js:111:6229
+    
+and api integration not working.
+Now login API is working in swagger.
+in dashboard courses and users are not listing.
+at dashboard course management page: Error: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+Prodemyx Deployed:
+
+Frontend: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com 
+Dashboard: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ 
+API docs: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api-docs 
+DB: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/phpmyadmin 
+
+EC2_USER: ubuntu
+EC2_HOST: ec2-16-171-24-103.eu-north-1.compute.amazonaws.com
+EC2_BACKEND_PATH: /var/www/prodemyx-backend
+EC2_DASHBOARD_PATH: /var/www/prodemyx-dashboard
+EC2_PRODEMYX_PATH: /var/www/prodemyx-website
+VITE_API_URL: http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api
+
+do not delete this files. do not run execution tests.
+
+now swagger shows:
+curl -X 'POST' \
+  'http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/login' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "email": "admin@gmail.com",
+  "password": "admin"
+}'
+Request URL
+http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/login
+Server response
+Code	Details
+404
+Undocumented
+Error: Not Found
+
+Response body
+Download
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot POST /apilogin</pre>
+</body>
+</html>
+and 
+
+prodemyx root shows: index-pMI4RssK.js:252 
+ GET http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/public/categories 404 (Not Found)
+
+index-pMI4RssK.js:252 Failed to fetch categories: Error: HTTP error! status: 404
+    at l (index-pMI4RssK.js:252:188686)
+index-pMI4RssK.js:252 
+ GET http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/api/public/courses 404 (Not Found)
+index-pMI4RssK.js:252 Failed to fetch courses: Error: HTTP error! status: 404
+    at o (index-pMI4RssK.js:252:188924)
+
+    and 
+
+    Course Management
+Create, edit, and manage all courses in the portal.
+
+
+＋
+Create New Category
+
+＋
+Create New Course
+Error: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
