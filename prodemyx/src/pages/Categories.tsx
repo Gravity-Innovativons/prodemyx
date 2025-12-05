@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../api";
 import "../styles/fix-categories.css";
 
 type Course = {
@@ -29,13 +30,13 @@ export default function Categories() {
   }, []);
 
   async function loadCategories() {
-    const res = await fetch("http://127.0.0.1:5000/public/categories");
+    const res = await fetch(`${API_BASE_URL}/public/categories`);
     const data = await res.json();
     setCategories(data);
   }
 
   async function loadCourses() {
-    const res = await fetch("http://127.0.0.1:5000/public/courses");
+    const res = await fetch(`${API_BASE_URL}/public/courses`);
     const data = await res.json();
     setCourses(data);
   }
