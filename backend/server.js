@@ -908,6 +908,7 @@ app.post("/api/courses", auth, adminOnly, async (req, res) => {
       material_path,
       photo,
       status,
+      price   // <-- ADD THIS
     } = req.body;
 
     if (!title || !category_id)
@@ -916,13 +917,20 @@ app.post("/api/courses", auth, adminOnly, async (req, res) => {
     const conn = await pool.getConnection();
 
     const [result] = await conn.query(
-      `INSERT INTO courses (
-        title, short_description, long_description,
-        category_id, instructor_id,
+      `
+      INSERT INTO courses (
+        title,
+        short_description,
+        long_description,
+        category_id,
+        instructor_id,
         zoom_link,
-        file, photo,
-        status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        file,
+        photo,
+        status,
+        price
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
       [
         title,
         short_description || null,
@@ -933,6 +941,7 @@ app.post("/api/courses", auth, adminOnly, async (req, res) => {
         material_path || null,
         photo || null,
         status || "draft",
+        price || null  // <-- NEW
       ]
     );
 
@@ -944,6 +953,7 @@ app.post("/api/courses", auth, adminOnly, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 // ADMIN delete
 /**
@@ -1026,62 +1036,77 @@ app.delete("/api/courses/:id", auth, adminOnly, async (req, res) => {
  *       403:
  *         description: Admin access required
  */
-app.put("/api/courses/:id", auth, adminOnly, uploadCourseFiles.fields([{ name: 'photo', maxCount: 1 }, { name: 'material', maxCount: 1 }]), async (req, res) => {
-  const id = req.params.id;
-  const {
-    title,
-    short_description,
-    long_description,
-    category_id,
-    instructor_id,
-    zoom_link,
-    schedule_morning,
-    schedule_evening,
-    schedule_weekend,
-    status,
-  } = req.body;
+app.put(
+  "/api/courses/:id",
+  auth,
+  adminOnly,
+  uploadCourseFiles.fields([
+    { name: "photo", maxCount: 1 },
+    { name: "material", maxCount: 1 }
+  ]),
+  async (req, res) => {
+    const id = req.params.id;
 
-  const conn = await pool.getConnection();
+    const {
+      title,
+      short_description,
+      long_description,
+      category_id,
+      instructor_id,
+      zoom_link,
+      schedule_morning,
+      schedule_evening,
+      schedule_weekend,
+      status,
+      price   // <-- NEW
+    } = req.body;
 
-  // Build query dynamically
-  let query = "UPDATE courses SET ";
-  const params = [];
+    const conn = await pool.getConnection();
 
-  if (title) { query += "title=?, "; params.push(title); }
-  if (short_description) { query += "short_description=?, "; params.push(short_description); }
-  if (long_description) { query += "long_description=?, "; params.push(long_description); }
-  if (category_id) { query += "category_id=?, "; params.push(category_id); }
-  if (instructor_id) { query += "instructor_id=?, "; params.push(instructor_id); }
-  if (zoom_link) { query += "zoom_link=?, "; params.push(zoom_link); }
-  if (status) { query += "status=?, "; params.push(status); }
+    let query = "UPDATE courses SET ";
+    const params = [];
 
+    if (title) { query += "title=?, "; params.push(title); }
+    if (short_description) { query += "short_description=?, "; params.push(short_description); }
+    if (long_description) { query += "long_description=?, "; params.push(long_description); }
+    if (category_id) { query += "category_id=?, "; params.push(category_id); }
+    if (instructor_id) { query += "instructor_id=?, "; params.push(instructor_id); }
+    if (zoom_link) { query += "zoom_link=?, "; params.push(zoom_link); }
+    if (status) { query += "status=?, "; params.push(status); }
 
+    // ADD PRICE
+    if (price) { 
+      query += "price=?, "; 
+      params.push(price); 
+    }
 
-  // Files
-  if (req.files['photo']) {
-    query += "photo=?, ";
-    params.push(`/uploads/course-covers/${req.files['photo'][0].filename}`);
+    // FILES
+    if (req.files["photo"]) {
+      query += "photo=?, ";
+      params.push(`/uploads/course-covers/${req.files["photo"][0].filename}`);
+    }
+
+    if (req.files["material"]) {
+      query += "file=?, ";
+      params.push(`/uploads/materials/${req.files["material"][0].filename}`);
+    }
+
+    query = query.slice(0, -2);
+    query += " WHERE id=?";
+    params.push(id);
+
+    try {
+      await conn.query(query, params);
+      conn.release();
+      res.json({ message: "Course updated successfully" });
+    } catch (err) {
+      console.error("Update course error:", err);
+      conn.release();
+      res.status(500).json({ message: "Server error" });
+    }
   }
-  if (req.files['material']) {
-    query += "file=?, ";
-    params.push(`/uploads/materials/${req.files['material'][0].filename}`);
-  }
+);
 
-  // Remove trailing comma and space
-  query = query.slice(0, -2);
-  query += " WHERE id=?";
-  params.push(id);
-
-  try {
-    await conn.query(query, params);
-    conn.release();
-    res.json({ message: "Course updated successfully" });
-  } catch (err) {
-    console.error("Update course error:", err);
-    conn.release();
-    res.status(500).json({ message: "Server error" });
-  }
-});
 
 // PUBLIC list (website)
 /**

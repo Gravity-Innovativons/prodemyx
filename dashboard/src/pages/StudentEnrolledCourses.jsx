@@ -192,10 +192,10 @@ const StudentEnrolledCourses = () => {
                                                                     rel="noreferrer"
                                                                     className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
                                                                 >
-                                                                    <span className="material-symbols-outlined text-sm">
+                                                                    {/* <span className="material-symbols-outlined text-sm">
                                                                         download
-                                                                    </span>
-                                                                    Download
+                                                                    </span> */}
+                                                                    View
                                                                 </a>
                                                             ) : (
                                                                 <span className="text-gray-400">No files</span>

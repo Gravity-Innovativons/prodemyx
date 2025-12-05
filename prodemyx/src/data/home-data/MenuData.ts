@@ -45,7 +45,7 @@ const menu_data: MenuItem[] = [
     },
     {
         id: 4,
-        title: "Dashboard",
+        title: "Contact Us",
         link: "#",
        
     },

@@ -6,10 +6,13 @@ type SEOProps = {
 
 const SEO = ({ pageTitle }: SEOProps) => {
   useEffect(() => {
-    document.title = `${pageTitle} - Online Courses & Education `;
+    // New title format
+    document.title = pageTitle
+      ? ` ProdemyX`
+      : "ProdemyX";
   }, [pageTitle]);
 
-  return null;
+  return null; // No UI rendering
 };
 
 export default SEO;

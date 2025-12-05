@@ -20,7 +20,7 @@ const CartArea = () => {
    const [guestNameInput, setGuestNameInput] = useState("");
    const [guestEmailInput, setGuestEmailInput] = useState("");
    const [guestPhoneInput, setGuestPhoneInput] = useState("");
-   const [couponCode, setCouponCode] = useState("");
+   // const [couponCode, setCouponCode] = useState("");
 
 
 
@@ -178,14 +178,14 @@ const CartArea = () => {
    /* -----------------------------
       Coupon apply placeholder (no backend logic provided)
       ----------------------------- */
-   const applyCoupon = () => {
-      // placeholder - implement coupon validation with backend
-      if (!couponCode.trim()) {
-         alert("Enter a coupon code");
-         return;
-      }
-      alert(`Coupon "${couponCode}" applied (placeholder).`);
-   };
+   // const applyCoupon = () => {
+   //    // placeholder - implement coupon validation with backend
+   //    if (!couponCode.trim()) {
+   //       alert("Enter a coupon code");
+   //       return;
+   //    }
+   //    alert(`Coupon "${couponCode}" applied (placeholder).`);
+   // };
 
    /* -----------------------------
       UI (modal placed above cart; cart markup unchanged)
@@ -383,7 +383,7 @@ const CartArea = () => {
                                        }}
                                     >
                                        {/* COUPON INPUT LEFT */}
-                                       <input
+                                       {/* <input
                                           type="text"
                                           placeholder="Coupon code"
                                           value={couponCode}
@@ -399,7 +399,7 @@ const CartArea = () => {
                                        />
 
                                        {/* APPLY COUPON MIDDLE */}
-                                       <button
+                                       {/* <button
                                           type="button"
                                           onClick={applyCoupon}
                                           style={{
@@ -415,7 +415,7 @@ const CartArea = () => {
                                           }}
                                        >
                                           Apply Coupon
-                                       </button>
+                                       </button> */} 
 
                                        {/* CLEAR CART RIGHT (aligned horizontally) */}
                                        <button

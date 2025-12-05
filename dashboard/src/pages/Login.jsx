@@ -63,7 +63,7 @@ export default function Login() {
               school
             </span>
           </div>
-          <h1 className="text-2xl font-bold mt-3">LMS Platform</h1>
+          <h1 className="text-2xl font-bold mt-3">Prodemyx</h1>
         </div>
 
         {/* Heading */}
@@ -127,7 +127,7 @@ export default function Login() {
         </form>
 
         <p className="text-center text-gray-400 text-sm mt-10">
-          © 2024 LMS Platform. All rights reserved.
+          © 2025 Prodemyx. All rights reserved.
         </p>
       </div>
     </div>

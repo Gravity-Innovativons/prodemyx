@@ -128,9 +128,7 @@ const AppNavigation = () => {
           <Route path="/registration" element={<Registration />} />
           <Route path="/contact" element={<Contact />} />
 
-        </Route>
-        <Route path="/" element={<Home />} />
-        {/* INSTRUCTOR ROUTES (NO HEADER) */}
+          {/* INSTRUCTOR ROUTES (NO HEADER) */}
         <Route path="/instructor-dashboard" element={<InstructorDashboard />} />
         <Route path="/instructor-profile" element={<InstructorProfile />} />
         <Route path="/instructor-enrolled-courses" element={<InstructorEnrollCourse />} />
@@ -144,7 +142,6 @@ const AppNavigation = () => {
         <Route path="/instructor-assignment" element={<InstructorAssignment />} />
         <Route path="/instructor-setting" element={<InstructorSetting />} />
 
-        {/* STUDENT ROUTES (NO HEADER) */}
         <Route path="/student-dashboard" element={<StudentDashboard />} />
         <Route path="/student-profile" element={<StudentProfile />} />
         <Route path="/student-enrolled-courses" element={<StudentEnrollCourse />} />
@@ -153,6 +150,13 @@ const AppNavigation = () => {
         <Route path="/student-attempts" element={<StudentAttempt />} />
         <Route path="/student-history" element={<StudentHistory />} />
         <Route path="/student-setting" element={<StudentSetting />} />
+
+        </Route>
+        <Route path="/" element={<Home />} />
+        
+
+        {/* STUDENT ROUTES (NO HEADER) */}
+        
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />

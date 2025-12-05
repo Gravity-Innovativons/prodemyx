@@ -58,7 +58,7 @@ const HeaderTwo = () => {
                                  <ul className="list-wrap">
                                   
                                     <li className="header-btn login-btn">
-                                       <Link to="/" className="btn">Get Started</Link>
+                                       <Link to="/" className="btn">Login</Link>
                                     </li>
                                  </ul>
                               </div>
