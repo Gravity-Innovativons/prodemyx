@@ -50,7 +50,7 @@ export default function CreateCourse() {
       const formData = new FormData();
       formData.append("material", file);
 
-      const res = await fetch(`${BASE_URL}/api/upload-material`, {
+      const res = await fetch(`${BASE_URL}/upload-material`, {
         method: "POST",
         body: formData,
       });
@@ -89,7 +89,7 @@ export default function CreateCourse() {
       const formData = new FormData();
       formData.append("cover", file);
 
-      const res = await fetch(`${BASE_URL}/api/upload-cover`, {
+      const res = await fetch(`${BASE_URL}/upload-cover`, {
         method: "POST",
         body: formData,
       });

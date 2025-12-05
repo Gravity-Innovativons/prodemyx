@@ -65,8 +65,8 @@ export default function EditCourse() {
           setScheduleEvening(!!course.schedule_evening);
           setScheduleWeekend(!!course.schedule_weekend);
 
-          setExistingCoverUrl(course.photo || "");
-          setExistingMaterialUrl(course.material_url || "");
+          setExistingCoverUrl(course.photo ? `${BASE_URL}/uploads/course-covers/${course.photo}` : "");
+          setExistingMaterialUrl(course.material_url ? `${BASE_URL}/uploads/materials/${course.material_url}` : "");
         }
       } catch (err) {
         alert("Failed to load course.");
@@ -123,7 +123,7 @@ export default function EditCourse() {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch(`${BASE_URL}/api/courses/${id}`, {
+      const res = await fetch(`${BASE_URL}/courses/${id}`, {
         method: "PUT",
         headers: { Authorization: token ? `Bearer ${token}` : "" },
         body: formData,

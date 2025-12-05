@@ -49,7 +49,7 @@ const CartArea = () => {
 
    const registerAndProceed = async (name: string, email: string, phone: string) => {
       try {
-         const response = await apiFetch("/api/auth/register-guest", {
+         const response = await apiFetch("/auth/register-guest", {
             method: "POST",
             body: JSON.stringify({ name, email, phone }),
          });
