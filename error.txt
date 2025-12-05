@@ -1,6 +1,4 @@
-Now on remote deploy http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ 
-Now login is success, 
-any routes in dashboard folder is not working, for example, http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/admindashboard is showing 404 after login.
+Now on remote deploy http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com courses are not listing and api integration not working.
 
 Prodemyx Deployed:
 
