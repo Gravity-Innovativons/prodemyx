@@ -1,5 +1,6 @@
 Now on remote deploy http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/app/ 
-is showing login page but shows server error on click login button - check & fix this only.
+Now login is success, 
+any routes in dashboard folder is not working, for example, http://ec2-16-171-24-103.eu-north-1.compute.amazonaws.com/admindashboard is showing 404 after login.
 
 Prodemyx Deployed:
 

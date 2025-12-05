@@ -8,26 +8,26 @@ const StudentSidebar = () => {
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        navigate("/login");
+        navigate("/app/login");
     };
 
     const menuItems = [
         {
             icon: "dashboard",
             label: "Dashboard",
-            path: "/student/dashboard",
+            path: "/app/student/dashboard",
             active: true,
         },
         {
             icon: "person",
             label: "My Profile",
-            path: "/student/profile",
+            path: "/app/student/profile",
             active: true,
         },
         {
             icon: "school",
             label: "Enrolled Courses",
-            path: "/student/enrolled-courses",
+            path: "/app/student/enrolled-courses",
             active: true,
         },
         // Commented out menu items as requested

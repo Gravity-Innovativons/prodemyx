@@ -7,26 +7,26 @@ export default function InstructorSidebar() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login");
+    navigate("/app/login");
   };
 
   const menuItems = [
     {
       icon: "dashboard",
       label: "Dashboard",
-      path: "/instructor/dashboard",
+      path: "/app/instructor/dashboard",
       active: true,
     },
     {
       icon: "person",
       label: "My Profile",
-      path: "/instructor/profile",
+      path: "/app/instructor/profile",
       active: true,
     },
     {
       icon: "school",
       label: "Assigned Courses",
-      path: "/instructor/assigned-courses",
+      path: "/app/instructor/assigned-courses",
       active: true,
     },
     // Commented out menu items as requested

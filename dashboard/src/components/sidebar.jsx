@@ -8,7 +8,7 @@ export default function Sidebar() {
   const location = useLocation();
 
   // detects whether we're in instructor or student area
-  const isUser = location.pathname.startsWith("/instructor") || location.pathname.startsWith("/student");
+  const isUser = location.pathname.startsWith("/app/instructor") || location.pathname.startsWith("/app/student");
 
   // helper for admin active links (exact match)
   const isActive = (path) =>

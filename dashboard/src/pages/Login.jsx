@@ -37,11 +37,11 @@ export default function Login() {
 
       // 🚀 Redirect to Dashboard (FOR ALL ROLES)
       if (data.user.role === "admin") {
-        window.location.href = "/admindashboard";
+        window.location.href = "/app/admindashboard";
       } else if (data.user.role === "instructor") {
-        window.location.href = "/instructor/dashboard";
+        window.location.href = "/app/instructor/dashboard";
       } else {
-        window.location.href = "/student/dashboard";
+        window.location.href = "/app/student/dashboard";
       }
 
 
