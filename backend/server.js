@@ -155,7 +155,7 @@ function createToken(user) {
 async function getUserById(id) {
   const conn = await pool.getConnection();
   const [rows] = await conn.query(
-    "SELECT id, name, email, role FROM users WHERE id = ?",
+    "SELECT id, name, email, role, phone, address FROM users WHERE id = ?",
     [id]
   );
   conn.release();
@@ -583,7 +583,7 @@ app.get("/api/me", auth, async (req, res) => {
 app.get("/api/users", auth, adminOnly, async (_, res) => {
   const conn = await pool.getConnection();
   const [rows] = await conn.query(
-    "SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC"
+    "SELECT id, name, email, role, phone, address, created_at FROM users ORDER BY created_at DESC"
   );
   conn.release();
   res.json(rows);
@@ -1206,12 +1206,21 @@ app.put(
         await conn.query(query, params);
       }
 
-      // 2. Update course schedule's meeting_schedule text if provided
-      if (meeting_schedule) {
-        await conn.query(
-          `UPDATE course_schedules SET meeting_schedule = ? WHERE course_id = ? ORDER BY id LIMIT 1`,
-          [meeting_schedule, id]
-        );
+      // 2. Update course schedules
+      // First, remove existing schedules for the course to avoid duplicates
+      await conn.query("DELETE FROM course_schedules WHERE course_id = ?", [id]);
+
+      // Then, insert new ones if meeting_schedule is provided
+      if (meeting_schedule && typeof meeting_schedule === 'string' && meeting_schedule.length > 0) {
+        const schedules = meeting_schedule.split(',').map(s => s.trim()).filter(Boolean);
+        for (const schedule of schedules) {
+          // We use dummy date/time here as the table requires them.
+          // This can be enhanced later to capture actual dates/times.
+          await conn.query(
+            `INSERT INTO course_schedules (course_id, instructor_id, meeting_title, meeting_schedule, meeting_date, meeting_time) VALUES (?, ?, ?, ?, CURDATE(), '00:00:00')`,
+            [id, instructor_id || null, `Course Session`, schedule]
+          );
+        }
       }
 
       await conn.commit();

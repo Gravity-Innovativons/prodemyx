@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { InstructorProfileArea } from "./InstructorProfile.jsx";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../api.js";
+import InstructorSidebar from "../components/InstructorSidebar.jsx";
 
 // 🔐 Token-based API fetch
 const apiFetch = async (url, options = {}) => {
@@ -22,11 +22,10 @@ const apiFetch = async (url, options = {}) => {
 
 const InstructorDashboard = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [stats, setStats] = useState({
-    total_users: 0,
-    total_courses: 0,
-    total_enrollments: 0,
+    assigned_courses: 0,
+    total_students: 0,
+    upcoming_classes: 0,
   });
 
   // Redirect if not logged in
@@ -43,11 +42,11 @@ const InstructorDashboard = () => {
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-        const data = await apiFetch("/reports/summary");
+        const data = await apiFetch("/instructor/dashboard");
         setStats({
-          total_users: data.total_users,
-          total_courses: data.total_courses,
-          total_enrollments: data.total_enrollments,
+          assigned_courses: data.assigned_courses || 0,
+          total_students: data.total_students || 0,
+          upcoming_classes: data.upcoming_classes || 0,
         });
       } catch (err) {
         console.error("Dashboard error:", err);
@@ -61,7 +60,7 @@ const InstructorDashboard = () => {
     <div className="bg-background-light font-display text-[#333333] min-h-screen">
       <div className="relative flex min-h-screen w-full">
 
-        <Sidebar />
+        <InstructorSidebar />
 
         {/* MAIN CONTENT */}
         <div className="flex-1">
@@ -69,24 +68,14 @@ const InstructorDashboard = () => {
 
           <main className="p-6">
             <h1 className="text-[#111318] text-3xl font-bold mb-6">Dashboard</h1>
-            {location.pathname === "/instructor/profile" ? (
-              <InstructorProfileArea />
-            ) : (
-              <>
-                <StatsSection stats={stats} />
-                <ChartsAndLists />
-              </>
-            )}
+            <StatsSection stats={stats} />
+            <ChartsAndLists />
           </main>
         </div>
       </div>
     </div>
   );
 };
-
-/* ---------------- Sidebar (NEW MATCHES USER MANAGEMENT) ---------------- */
-import Sidebar from "../components/sidebar";
-
 
 /* ---------------- Navbar ---------------- */
 const TopNavbar = () => (
@@ -111,10 +100,9 @@ const TopNavbar = () => (
 /* ---------------- Stats Section ---------------- */
 const StatsSection = ({ stats }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-    <StatBox title="Total Users" value={stats.total_users} />
-    <StatBox title="Total Courses" value={stats.total_courses} />
-    <StatBox title="Total Enrollments" value={stats.total_enrollments} />
-    <StatBox title="Completion Rate" value="76%" />
+    <StatBox title="Assigned Courses" value={stats.assigned_courses} />
+    <StatBox title="Total Students" value={stats.total_students} />
+    <StatBox title="Upcoming Classes" value={stats.upcoming_classes} />
   </div>
 );
 
