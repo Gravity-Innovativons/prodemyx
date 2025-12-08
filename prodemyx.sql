@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2025 at 06:55 AM
+-- Generation Time: Dec 08, 2025 at 07:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -88,6 +88,7 @@ CREATE TABLE `course_schedules` (
   `course_id` int(11) UNSIGNED NOT NULL,
   `instructor_id` int(11) UNSIGNED DEFAULT NULL,
   `meeting_title` varchar(255) NOT NULL,
+  `meeting_schedule` enum('Morning','Evening','Weekend') DEFAULT NULL,
   `meeting_link` varchar(500) DEFAULT NULL,
   `meeting_date` date NOT NULL,
   `meeting_time` time NOT NULL,
