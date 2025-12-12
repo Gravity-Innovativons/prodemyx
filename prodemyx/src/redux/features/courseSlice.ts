@@ -5,6 +5,7 @@ export interface Course {
   id: number;
   title: string;
   thumb: string | undefined;
+  photo: string | undefined;
   category: string;
   rating: number;
   desc: string;

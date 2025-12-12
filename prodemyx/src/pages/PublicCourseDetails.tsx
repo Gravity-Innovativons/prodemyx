@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { apiFetch, API_BASE_URL } from "../api";
+import { apiFetch } from "../api";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/features/cartSlice";
 
